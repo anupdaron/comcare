@@ -21,9 +21,8 @@ RouterSend.get("/receive", (req, res) => {
               return res.status(500).json({ error: "something went wrong" });
             });
         });
-        return res.status(200).json({
-          modelPatientList: result.visit,
-        });
+
+        return res.status(200).json(result);
       } else {
         res.status(200).json({ message: "You are on sync" });
       }

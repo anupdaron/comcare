@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const visitSchema = new mongoose.Schema({
   visit: Array,
-  retrieved: Boolean,
+  synced: Boolean,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 

@@ -67,7 +67,6 @@ RouterGet.post("/send-info", (req, res) => {
 
 const saveVisit = (req, res, user_id) => {
   const data = req.body;
-  console.log(data.modelPatientList);
   const visit = new Visit({
     visit: data.modelPatientList,
     user: user_id,
