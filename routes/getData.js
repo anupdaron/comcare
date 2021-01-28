@@ -11,7 +11,8 @@ const User = mongoose.model("User");
 RouterGet.post("/api/addVisit", (req, res) => {
   let path = "";
   if (req.files) {
-    const image = req.files.image[0];
+    console.log(req.files);
+    const image = req.files.image;
     path = DIR + uuidv4() + image.name;
 
     image.mv(path, (error) => {
