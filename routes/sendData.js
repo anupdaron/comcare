@@ -1,18 +1,18 @@
 const express = require("express");
 const RouterSend = express.Router();
 const mongoose = require("mongoose");
-const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
-const DIR = "./public/";
+var fs = require("fs");
 const Visit = mongoose.model("Visit");
-const User = mongoose.model("User");
 
 // send data
 RouterSend.get("/api/syncVisit", (req, res) => {
   Visit.find({ synced: false })
-    .then((result) => {
+    .then(async (result) => {
       if (result.length > 0) {
-        result.forEach((item) => {
+        data = [];
+        await result.forEach((item) => {
+          let image = fs.readFileSync(item.image);
+          data.push(image);
           Visit.findOneAndUpdate({ _id: item._id }, { synced: true })
             .then(() => {
               console.log("success");
@@ -22,7 +22,7 @@ RouterSend.get("/api/syncVisit", (req, res) => {
             });
         });
 
-        return res.status(200).json(result);
+        return res.status(200).json(data);
       } else {
         res.status(200).json({ message: "You are on sync" });
       }

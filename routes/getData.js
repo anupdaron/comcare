@@ -7,42 +7,12 @@ const DIR = "./public/";
 const Visit = mongoose.model("Visit");
 const User = mongoose.model("User");
 
-// define image location
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log(file);
-    cb(null, DIR);
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, uuidv4() + "-" + fileName);
-  },
-});
-
-//upload image
-var upload = multer({
-  limits: { fieldSize: 25 * 1024 * 1024 },
-  storage: storage,
-
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-    }
-  },
-}).single("image");
-
 // get data from frontend
 RouterGet.post("/api/addVisit", (req, res) => {
+  let path = "";
   if (req.files) {
     const image = req.files.image[0];
-    const path = DIR + image.name;
+    path = DIR + uuidv4() + image.name;
 
     image.mv(path, (error) => {
       if (error) {
@@ -67,13 +37,13 @@ RouterGet.post("/api/addVisit", (req, res) => {
         user
           .save()
           .then((data) => {
-            saveVisit(req, res, data._id);
+            saveVisit(req, res, data._id, path);
           })
           .catch((err) => {
             console.log(err);
           });
       } else {
-        saveVisit(req, res, result._id);
+        saveVisit(req, res, result._id, path);
       }
     })
     .catch((err) => {
@@ -81,9 +51,10 @@ RouterGet.post("/api/addVisit", (req, res) => {
     });
 });
 
-const saveVisit = (req, res, user_id) => {
+const saveVisit = (req, res, user_id, path) => {
   const data = req.body.json;
   const visit = new Visit({
+    image: path,
     visit: data.modelPatientList,
     user: user_id,
     synced: false,
@@ -94,9 +65,6 @@ const saveVisit = (req, res, user_id) => {
       res.status(200).json({ message: "Succesful" });
     })
     .catch((err) => console.log(err));
-  // upload(req, res, async function (err) {
-  //   console.log(`file: ${req.file} and body: ${req.body}`);
-  // });
 };
 
 module.exports = RouterGet;
