@@ -40,13 +40,25 @@ var upload = multer({
 
 // get data from frontend
 RouterGet.post("/api/addVisit", (req, res) => {
-  console.log(req.files);
-  User.find({ user_id: req.body.appUserId })
+  const image = req.files.image[0];
+  const path = DIR + image.name;
+
+  image.mv(path, (error) => {
+    if (error) {
+      console.error(error);
+      res.writeHead(500, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify({ status: "error", message: error }));
+      return;
+    }
+  });
+  User.find({ user_id: req.body.json.appUserId })
     .then((result) => {
       if (result.length < 1) {
         const user = new User({
           username: "",
-          user_id: req.body.appUserId,
+          user_id: req.body.json.appUserId,
           address: "",
           dateofbirth: "",
         });
@@ -68,22 +80,21 @@ RouterGet.post("/api/addVisit", (req, res) => {
 });
 
 const saveVisit = (req, res, user_id) => {
-  // const data = req.body;
-  // console.log(data);
-  // const visit = new Visit({
-  //   visit: data.modelPatientList,
-  //   user: user_id,
-  //   synced: false,
-  // });
-  // visit
-  //   .save()
-  //   .then((result) => {
-  //     res.status(200).json({ message: "Succesful" });
-  //   })
-  //   .catch((err) => console.log(err));
-  upload(req, res, async function (err) {
-    console.log(`file: ${req.file} and body: ${req.body}`);
+  const data = req.body.json;
+  const visit = new Visit({
+    visit: data.modelPatientList,
+    user: user_id,
+    synced: false,
   });
+  visit
+    .save()
+    .then((result) => {
+      res.status(200).json({ message: "Succesful" });
+    })
+    .catch((err) => console.log(err));
+  // upload(req, res, async function (err) {
+  //   console.log(`file: ${req.file} and body: ${req.body}`);
+  // });
 };
 
 module.exports = RouterGet;
