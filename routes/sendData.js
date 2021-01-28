@@ -9,11 +9,11 @@ const User = mongoose.model("User");
 
 // send data
 RouterSend.get("/api/syncVisit", (req, res) => {
-  Visit.find({ retrieved: false })
+  Visit.find({ synced: false })
     .then((result) => {
       if (result.length > 0) {
         result.forEach((item) => {
-          Visit.findOneAndUpdate({ _id: item._id }, { retrieved: true })
+          Visit.findOneAndUpdate({ _id: item._id }, { synced: true })
             .then(() => {
               console.log("success");
             })

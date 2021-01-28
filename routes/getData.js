@@ -67,10 +67,11 @@ RouterGet.post("/api/addVisit", (req, res) => {
 
 const saveVisit = (req, res, user_id) => {
   const data = req.body;
+  console.log(data);
   const visit = new Visit({
     visit: data.modelPatientList,
     user: user_id,
-    retrieved: false,
+    synced: false,
   });
   visit
     .save()
