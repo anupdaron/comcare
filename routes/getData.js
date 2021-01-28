@@ -12,7 +12,7 @@ RouterGet.post("/api/addVisit", (req, res) => {
   let path = "";
   if (req.files) {
     console.log(req.files);
-    const image = req.files.image;
+    const image = req.files.image[0];
     path = DIR + uuidv4() + image.name;
 
     image.mv(path, (error) => {
