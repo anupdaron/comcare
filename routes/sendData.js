@@ -8,7 +8,7 @@ const Visit = mongoose.model("Visit");
 const User = mongoose.model("User");
 
 // send data
-RouterSend.get("/receive", (req, res) => {
+RouterSend.get("/api/syncVisit", (req, res) => {
   Visit.find({ retrieved: false })
     .then((result) => {
       if (result.length > 0) {

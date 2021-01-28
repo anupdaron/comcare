@@ -38,7 +38,7 @@ var upload = multer({
 }).single("image");
 
 // get data from frontend
-RouterGet.post("/send-info", (req, res) => {
+RouterGet.post("/api/addVisit", (req, res) => {
   User.find({ user_id: req.body.appUserId })
     .then((result) => {
       if (result.length < 1) {
