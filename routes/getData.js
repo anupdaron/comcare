@@ -36,12 +36,11 @@ var upload = multer({
       return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
     }
   },
-}).single("files");
+}).single("image");
 
 // get data from frontend
 RouterGet.post("/api/addVisit", (req, res) => {
   console.log(req.files);
-  console.log(req);
   User.find({ user_id: req.body.appUserId })
     .then((result) => {
       if (result.length < 1) {
@@ -83,7 +82,6 @@ const saveVisit = (req, res, user_id) => {
   //   })
   //   .catch((err) => console.log(err));
   upload(req, res, async function (err) {
-    console.log(req);
     console.log(`file: ${req.file} and body: ${req.body}`);
   });
 };
