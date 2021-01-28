@@ -22,7 +22,7 @@ app.use(RouterSend);
 
 //connect to database
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect(process.env.MONGO_URL || MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
