@@ -83,7 +83,7 @@ const saveVisit = (req, res, user_id) => {
   //   })
   //   .catch((err) => console.log(err));
   upload(req, res, async function (err) {
-    conole.log(req);
+    console.log(req);
     console.log(`file: ${req.file} and body: ${req.body}`);
   });
 };
