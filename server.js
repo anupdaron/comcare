@@ -17,6 +17,7 @@ const { MONGO_URL } = require("./Config/dbConfig");
 app.use("/public", express.static("public"));
 app.use(cors());
 app.use(express.json());
+app.use(fileupload());
 app.use(RouterGet);
 app.use(RouterSend);
 
