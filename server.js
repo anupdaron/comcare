@@ -11,6 +11,7 @@ require("./models/User");
 const RouterGet = require("./routes/getData");
 const RouterSend = require("./routes/sendData");
 const PORT = process.env.PORT || 5000;
+const { MONGO_URL } = require("./Config/dbConfig");
 
 //middlewares
 app.use("/public", express.static("public"));
