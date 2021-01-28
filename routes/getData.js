@@ -40,19 +40,21 @@ var upload = multer({
 
 // get data from frontend
 RouterGet.post("/api/addVisit", (req, res) => {
-  const image = req.files.image[0];
-  const path = DIR + image.name;
+  if (req.files) {
+    const image = req.files.image[0];
+    const path = DIR + image.name;
 
-  image.mv(path, (error) => {
-    if (error) {
-      console.error(error);
-      res.writeHead(500, {
-        "Content-Type": "application/json",
-      });
-      res.end(JSON.stringify({ status: "error", message: error }));
-      return;
-    }
-  });
+    image.mv(path, (error) => {
+      if (error) {
+        console.error(error);
+        res.writeHead(500, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify({ status: "error", message: error }));
+        return;
+      }
+    });
+  }
   User.find({ user_id: req.body.json.appUserId })
     .then((result) => {
       if (result.length < 1) {
