@@ -10,6 +10,7 @@ const User = mongoose.model("User");
 // define image location
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log(file);
     cb(null, DIR);
   },
   filename: (req, file, cb) => {
@@ -66,21 +67,21 @@ RouterGet.post("/api/addVisit", (req, res) => {
 });
 
 const saveVisit = (req, res, user_id) => {
-  const data = req.body;
-  console.log(data);
-  const visit = new Visit({
-    visit: data.modelPatientList,
-    user: user_id,
-    synced: false,
-  });
-  visit
-    .save()
-    .then((result) => {
-      res.status(200).json({ message: "Succesful" });
-    })
-    .catch((err) => console.log(err));
+  // const data = req.body;
+  // console.log(data);
+  // const visit = new Visit({
+  //   visit: data.modelPatientList,
+  //   user: user_id,
+  //   synced: false,
+  // });
+  // visit
+  //   .save()
+  //   .then((result) => {
+  //     res.status(200).json({ message: "Succesful" });
+  //   })
+  //   .catch((err) => console.log(err));
   upload(req, res, async function (err) {
-    //console.log(`file: ${req.file} and body: ${req.body}`);
+    console.log(`file: ${req.file} and body: ${req.body}`);
   });
 };
 
