@@ -59,7 +59,7 @@ const saveVisit = (req, res, user_id, paths) => {
   const data = req.body.json;
   const visit = new Visit({
     image: paths,
-    modelVisitList: data,
+    modelVisitList: JSON.parse(data),
     user: user_id,
     synced: false,
   });
