@@ -1,14 +1,13 @@
 const express = require("express");
 const RouterGet = express.Router();
 const mongoose = require("mongoose");
-const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
 const DIR = "./public/";
 const Visit = mongoose.model("Visit");
 const User = mongoose.model("User");
 
 // get data from frontend
 RouterGet.post("/api/addVisit", (req, res) => {
+  console.log(req.body);
   let path = "";
   if (req.files) {
     console.log(req.files);
