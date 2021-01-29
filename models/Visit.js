@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const visitSchema = new mongoose.Schema({
-  visit: Array,
+  modelVisitList: Array,
   synced: Boolean,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   image: [],

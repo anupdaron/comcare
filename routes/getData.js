@@ -56,10 +56,10 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 });
 
 const saveVisit = (req, res, user_id, paths) => {
-  const data = JSON.parse(req.body.json);
+  const data = req.body.json;
   const visit = new Visit({
     image: paths,
-    visit: data.modelPatientList,
+    modelVisitList: data,
     user: user_id,
     synced: false,
   });
