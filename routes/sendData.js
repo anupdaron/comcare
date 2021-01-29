@@ -9,13 +9,7 @@ RouterSend.get("/api/syncVisit", (req, res) => {
   Visit.find({ synced: false })
     .then(async (result) => {
       if (result.length > 0) {
-        data = [];
         await result.forEach((item) => {
-          item.image.forEach((image) => {
-            let pic = fs.readFileSync(image);
-            data.push(pic);
-          });
-
           Visit.findOneAndUpdate({ _id: item._id }, { synced: true })
             .then(() => {
               console.log("success");
@@ -25,7 +19,7 @@ RouterSend.get("/api/syncVisit", (req, res) => {
             });
         });
 
-        return res.status(200).json(data);
+        return res.status(200).json(result);
       } else {
         res.status(200).json({ message: "You are on sync" });
       }
