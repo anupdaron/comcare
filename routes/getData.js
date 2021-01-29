@@ -7,7 +7,7 @@ const User = mongoose.model("User");
 
 // get data from frontend
 RouterGet.post("/api/addVisit", async (req, res) => {
-  console.log(req.body);
+  console.log(req.body.json);
   let paths = [];
   if (req.files) {
     console.log(req.files);
