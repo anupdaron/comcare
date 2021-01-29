@@ -6,15 +6,15 @@ const Visit = mongoose.model("Visit");
 const User = mongoose.model("User");
 
 // get data from frontend
-RouterGet.post("/api/addVisit", (req, res) => {
+RouterGet.post("/api/addVisit", async (req, res) => {
   console.log(req.body);
-  let path = "";
+  let paths = [];
   if (req.files) {
     console.log(req.files);
     const images = req.files.image;
-    paths = [];
-    images.forEach((image) => {
-      path = req.protocol + "://" + req.headers.host + "/public/" + image.name;
+    await images.forEach((image) => {
+      let path =
+        req.protocol + "://" + req.headers.host + "/public/" + image.name;
       newPath = DIR + image.name;
       paths.push(path);
       image.mv(newPath, (error) => {
@@ -41,13 +41,13 @@ RouterGet.post("/api/addVisit", (req, res) => {
         user
           .save()
           .then((data) => {
-            saveVisit(req, res, data._id, path);
+            saveVisit(req, res, data._id, paths);
           })
           .catch((err) => {
             console.log(err);
           });
       } else {
-        saveVisit(req, res, result._id, path);
+        saveVisit(req, res, result._id, paths);
       }
     })
     .catch((err) => {
@@ -55,7 +55,7 @@ RouterGet.post("/api/addVisit", (req, res) => {
     });
 });
 
-const saveVisit = (req, res, user_id, path) => {
+const saveVisit = (req, res, user_id, paths) => {
   const data = req.body.json;
   const visit = new Visit({
     image: paths,
