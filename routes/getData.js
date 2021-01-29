@@ -29,12 +29,12 @@ RouterGet.post("/api/addVisit", async (req, res) => {
       });
     });
   }
-  User.find({ user_id: req.body.json.appUserId })
+  User.find({ user_id: JSON.parse(req.body.json.appUserId) })
     .then((result) => {
       if (result.length < 1) {
         const user = new User({
           username: "",
-          user_id: req.body.json.appUserId,
+          user_id: JSON.parse(req.body.json.appUserId),
           address: "",
           dateofbirth: "",
         });
@@ -56,7 +56,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 });
 
 const saveVisit = (req, res, user_id, paths) => {
-  const data = req.body.json;
+  const data = JSON.parse(req.body.json);
   const visit = new Visit({
     image: paths,
     visit: data.modelPatientList,
