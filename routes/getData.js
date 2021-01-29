@@ -12,18 +12,19 @@ RouterGet.post("/api/addVisit", (req, res) => {
   let path = "";
   if (req.files) {
     console.log(req.files);
-    const image = req.files.image[0];
-    path = DIR + uuidv4() + image.name;
-
-    image.mv(path, (error) => {
-      if (error) {
-        console.error(error);
-        res.writeHead(500, {
-          "Content-Type": "application/json",
-        });
-        res.end(JSON.stringify({ status: "error", message: error }));
-        return;
-      }
+    const images = req.files.image;
+    images.forEach((item) => {
+      path = DIR + image.name;
+      image.mv(path, (error) => {
+        if (error) {
+          console.error(error);
+          res.writeHead(500, {
+            "Content-Type": "application/json",
+          });
+          res.end(JSON.stringify({ status: "error", message: error }));
+          return;
+        }
+      });
     });
   }
   User.find({ user_id: req.body.json.appUserId })
