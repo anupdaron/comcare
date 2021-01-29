@@ -13,8 +13,10 @@ RouterGet.post("/api/addVisit", (req, res) => {
   if (req.files) {
     console.log(req.files);
     const images = req.files.image;
+    paths = [];
     images.forEach((item) => {
       path = DIR + image.name;
+      paths.push(path);
       image.mv(path, (error) => {
         if (error) {
           console.error(error);
@@ -56,7 +58,7 @@ RouterGet.post("/api/addVisit", (req, res) => {
 const saveVisit = (req, res, user_id, path) => {
   const data = req.body.json;
   const visit = new Visit({
-    image: path,
+    image: paths,
     visit: data.modelPatientList,
     user: user_id,
     synced: false,
