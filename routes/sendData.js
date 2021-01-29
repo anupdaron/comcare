@@ -12,8 +12,8 @@ RouterSend.get("/api/syncVisit", (req, res) => {
         data = [];
         await result.forEach((item) => {
           item.image.forEach((image) => {
-            let image = fs.readFileSync(item.image);
-            data.push(image);
+            let pic = fs.readFileSync(item.image);
+            data.push(pic);
           });
 
           Visit.findOneAndUpdate({ _id: item._id }, { synced: true })
