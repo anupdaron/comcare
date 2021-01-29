@@ -14,7 +14,7 @@ RouterGet.post("/api/addVisit", (req, res) => {
     console.log(req.files);
     const images = req.files.image;
     paths = [];
-    images.forEach((item) => {
+    images.forEach((image) => {
       path = DIR + image.name;
       paths.push(path);
       image.mv(path, (error) => {
