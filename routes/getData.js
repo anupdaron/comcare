@@ -18,10 +18,8 @@ RouterGet.post("/api/addVisit", (req, res) => {
       console.log(req.protocol, req.headers.host);
       path = req.protocol + "://" + req.headers.host + DIR + image.name;
       newPath = DIR + image.name;
-      console.log(path);
-
-      paths.push(newPath);
-      image.mv(path, (error) => {
+      paths.push(path);
+      image.mv(newPath, (error) => {
         if (error) {
           console.error(error);
           res.writeHead(500, {
