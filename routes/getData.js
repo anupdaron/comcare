@@ -3,7 +3,7 @@ const RouterGet = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
-const DIR = "./public/";
+const DIR = "/public/";
 const Visit = mongoose.model("Visit");
 const User = mongoose.model("User");
 
@@ -15,7 +15,7 @@ RouterGet.post("/api/addVisit", (req, res) => {
     const images = req.files.image;
     paths = [];
     images.forEach((image) => {
-      path = DIR + image.name;
+      path = req.protocol + "://" + req.headers.host + DIR + image.name;
       paths.push(path);
       image.mv(path, (error) => {
         if (error) {

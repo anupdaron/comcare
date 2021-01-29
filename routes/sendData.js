@@ -12,7 +12,7 @@ RouterSend.get("/api/syncVisit", (req, res) => {
         data = [];
         await result.forEach((item) => {
           item.image.forEach((image) => {
-            let pic = fs.readFileSync(item.image);
+            let pic = fs.readFileSync(image);
             data.push(pic);
           });
 
