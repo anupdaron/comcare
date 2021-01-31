@@ -93,7 +93,6 @@ const saveVisit = (req, res, user_id, paths) => {
     });
   }
   const visit = new Visit({
-    image: paths,
     modelVisitList: data,
     user: user_id,
     synced: false,
