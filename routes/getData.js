@@ -85,6 +85,7 @@ const saveVisit = (req, res, user_id, paths) => {
       });
     });
   } else {
+    console.log(data);
     data.modelPatienList.map((patient) => {
       for (let i = 0; i < paths.length; i++) {
         return (patient.image = paths[i]);
