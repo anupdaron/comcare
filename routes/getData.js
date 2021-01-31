@@ -90,7 +90,7 @@ const saveVisit = (req, res, user_id, paths) => {
     ];
   } else {
     newData = [
-      ...data,
+      { ...data },
 
       data.modePatienList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
