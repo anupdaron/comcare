@@ -26,7 +26,7 @@ RouterSend.get("/api/syncVisit", (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ error: "somewthing went wrong" });
+      res.status(500).json({ error: "something went wrong" });
     });
 });
 

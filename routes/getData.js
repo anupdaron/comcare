@@ -9,15 +9,34 @@ const User = mongoose.model("User");
 RouterGet.post("/api/addVisit", async (req, res) => {
   console.log(req.body.json);
   let paths = [];
+  if (!req.files)
+    return res.status(400).json({ error: "Invalid request, image required" });
   if (req.files) {
     console.log(req.files);
     const images = req.files.image;
-    await images.forEach((image) => {
+    if (Array.isArray(images)) {
+      await images.forEach((image) => {
+        let path =
+          req.protocol + "://" + req.headers.host + "/public/" + image.name;
+        newPath = DIR + image.name;
+        paths.push(path);
+        image.mv(newPath, (error) => {
+          if (error) {
+            console.error(error);
+            res.writeHead(500, {
+              "Content-Type": "application/json",
+            });
+            res.end(JSON.stringify({ status: "error", message: error }));
+            return;
+          }
+        });
+      });
+    } else {
       let path =
-        req.protocol + "://" + req.headers.host + "/public/" + image.name;
-      newPath = DIR + image.name;
+        req.protocol + "://" + req.headers.host + "/public/" + images.name;
+      newPath = DIR + images.name;
       paths.push(path);
-      image.mv(newPath, (error) => {
+      images.mv(newPath, (error) => {
         if (error) {
           console.error(error);
           res.writeHead(500, {
@@ -27,7 +46,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
           return;
         }
       });
-    });
+    }
   }
   User.find({ user_id: req.body.json.appUserId })
     .then((result) => {
@@ -56,10 +75,20 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 });
 
 const saveVisit = (req, res, user_id, paths) => {
-  const data = req.body.json;
+  const data = JSON.parse(req.body.json);
+  let newData = [
+    [...data],
+    data.forEach((visit) => {
+      visit.modePatienList.map((patient) => {
+        for (let i = 0; i < paths.length; i++) {
+          return (patient.image = paths[i]);
+        }
+      });
+    }),
+  ];
   const visit = new Visit({
     image: paths,
-    modelVisitList: JSON.parse(data),
+    modelVisitList: newData,
     user: user_id,
     synced: false,
   });
