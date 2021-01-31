@@ -33,12 +33,20 @@ const createUser = (req, res, phone, password, user_id) => {
     .save()
     .then((result) => {
       res.status(201).json({
-        id: result.user_id,
+        code: "200",
+        status: "success",
+        details: { user_id: result.user_id },
+        message: "User Created Successfully",
       });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ msg: "Internal Server Error" });
+      res.status(500).json({
+        code: "500",
+        status: "Failed",
+        details: {},
+        message: "Internal Server Error",
+      });
     });
 };
 
@@ -47,15 +55,22 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
   User.findOne({ phone }).then((user) => {
     //if user not exist than return status 400
     if (!user)
-      return res
-        .status(400)
-        .json({ code: "400", status: "Failed", details: {} });
+      return res.status(400).json({
+        code: "400",
+        status: "Failed",
+        details: {},
+        message: "User not found",
+      });
 
     bcrypt.compare(password, user.password, (err, data) => {
       //if error than throw error
-      if (err) throw err;
-
-      //if both match than you can do anything
+      if (err)
+        res.status(400).json({
+          code: "200",
+          status: "Failure",
+          details: {},
+          message: "Invalid Credentials",
+        });
       if (data) {
         User.find({ phone }).then((result) => {
           if (result.length > 0) {
@@ -63,17 +78,24 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
               code: "200",
               status: "success",
               details: { user_id: result[0].user_id },
+              message: "User verified Successfully",
             });
           } else {
-            res
-              .status(400)
-              .json({ code: "400", status: "Failed", details: {} });
+            res.status(400).json({
+              code: "400",
+              status: "Failed",
+              details: {},
+              message: "User not found",
+            });
           }
         });
       } else {
-        return res
-          .status(400)
-          .json({ code: "400", status: "Failed", details: {} });
+        return res.status(400).json({
+          code: "400",
+          status: "Failed",
+          details: {},
+          message: "User not found",
+        });
       }
     });
   });
