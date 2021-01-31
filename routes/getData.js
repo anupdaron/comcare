@@ -78,14 +78,14 @@ const saveVisit = (req, res, user_id, paths) => {
   const data = JSON.parse(req.body.json);
   if (Array.isArray(data)) {
     data.forEach((visit) => {
-      visit.modePatienList.map((patient) => {
+      visit.modelPatienList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
           return (patient.image = paths[i]);
         }
       });
     });
   } else {
-    data.modePatienList.map((patient) => {
+    data.modelPatienList.map((patient) => {
       for (let i = 0; i < paths.length; i++) {
         return (patient.image = paths[i]);
       }
