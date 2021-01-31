@@ -78,7 +78,7 @@ const saveVisit = (req, res, user_id, paths) => {
   const data = JSON.parse(req.body.json);
   if (Array.isArray(data)) {
     data.forEach((visit) => {
-      visit.modelPatienList.map((patient) => {
+      visit.modelPatientList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
           return (patient.image = paths[i]);
         }
@@ -86,7 +86,7 @@ const saveVisit = (req, res, user_id, paths) => {
     });
   } else {
     console.log(data);
-    data.modelPatienList.map((patient) => {
+    data.modelPatientList.map((patient) => {
       for (let i = 0; i < paths.length; i++) {
         return (patient.image = paths[i]);
       }
