@@ -46,7 +46,10 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
   const { phone, password } = req.body;
   User.findOne({ phone }).then((user) => {
     //if user not exist than return status 400
-    if (!user) return res.status(400).json({ error: "Invalid Credentials" });
+    if (!user)
+      return res
+        .status(400)
+        .json({ code: "400", status: "Failed", details: {} });
 
     bcrypt.compare(password, user.password, (err, data) => {
       //if error than throw error
@@ -56,13 +59,21 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
       if (data) {
         User.find({ phone }).then((result) => {
           if (result.length > 0) {
-            res.status(200).json({ user_id: result[0].user_id });
+            res.status(200).json({
+              code: "200",
+              status: "success",
+              details: { user_id: result[0].user_id },
+            });
           } else {
-            res.status(400).json({ msg: "user does not exist" });
+            res
+              .status(400)
+              .json({ code: "400", status: "Failed", details: {} });
           }
         });
       } else {
-        return res.status(401).json({ error: "Invalid credentials" });
+        return res
+          .status(400)
+          .json({ code: "400", status: "Failed", details: {} });
       }
     });
   });
