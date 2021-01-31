@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
+const DIR = "./public/";
 
 // user register
 AuthRouter.post("/api/addUser", async (req, res) => {
@@ -65,6 +66,14 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
       }
     });
   });
+});
+
+AuthRouter.post("/api/updateProfile", (req, res) => {
+  const { user_id, address, name, dob, gender, designation } = req.body;
+  User.findOneAndUpdate(
+    { user_id },
+    { address, name, dob, gender, designation }
+  );
 });
 
 module.exports = AuthRouter;
