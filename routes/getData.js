@@ -93,7 +93,7 @@ const saveVisit = (req, res, user_id, paths) => {
     });
   }
   const visit = new Visit({
-    modelVisitList: data,
+    AppUserList: data,
     user: user_id,
     synced: false,
   });
