@@ -76,16 +76,29 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 
 const saveVisit = (req, res, user_id, paths) => {
   const data = JSON.parse(req.body.json);
-  let newData = [
-    [...data],
-    data.forEach((visit) => {
-      visit.modePatienList.map((patient) => {
+  let newData = [];
+  if (Array.isArray(data)) {
+    newData = [
+      [...data],
+      data.forEach((visit) => {
+        visit.modePatienList.map((patient) => {
+          for (let i = 0; i < paths.length; i++) {
+            return (patient.image = paths[i]);
+          }
+        });
+      }),
+    ];
+  } else {
+    newData = [
+      [...data],
+
+      data.modePatienList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
           return (patient.image = paths[i]);
         }
-      });
-    }),
-  ];
+      }),
+    ];
+  }
   const visit = new Visit({
     image: paths,
     modelVisitList: newData,
