@@ -117,6 +117,7 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
 
 AuthRouter.post("/api/updateProfile", (req, res) => {
   console.log(req.body, req.files);
+  const image = req.files.image;
   const {
     chw_id,
     chw_address,
@@ -125,9 +126,9 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
     chw_gender,
     chw_designation,
   } = req.body;
-  let path = req.protocol + "://" + req.headers.host + "/public/" + images.name;
+  let path = req.protocol + "://" + req.headers.host + "/public/" + image.name;
 
-  images.mv(path, (error) => {
+  image.mv(path, (error) => {
     if (error) {
       console.error(error);
       res.writeHead(500, {
