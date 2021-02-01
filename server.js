@@ -19,6 +19,7 @@ const AuthRouter = require("./routes/AuthRoute");
 //middlewares
 app.use("/public", express.static("public"));
 app.use(cors());
+app.use(express.urlencoded());
 app.use(express.json());
 app.use(fileupload());
 app.use(RouterGet);
