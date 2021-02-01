@@ -101,6 +101,7 @@ const saveVisit = (req, res, user_id, paths) => {
 
     data.modelPatientList.forEach((patient) => {
       patient.modelVisitList.forEach((visit) => {
+        console.log(visit.visit_id);
         const visitList = new VisitList({
           visit_id: visit.visit_id,
         });
