@@ -60,7 +60,7 @@ const saveVisit = (req, res, user_id, paths) => {
     let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
       "_"
     );
-    oldVisit = oldVisit[oldVisit.length - 1] - 1;
+    oldVisit[oldVisit.length - 1] = oldVisit[oldVisit.length - 1] - 1;
     oldVisit = oldVisit.join("_");
     VisitList.find({ visit_id: oldVisit }).then((result) => {
       if (result.length > 0) {
@@ -90,7 +90,7 @@ const saveVisit = (req, res, user_id, paths) => {
     let oldVisit = data.modelPatientList[0].modelVisitList[0].visit_id.split(
       "_"
     );
-    oldVisit = oldVisit[oldVisit.length - 1] - 1;
+    oldVisit[oldVisit.length - 1] = oldVisit[oldVisit.length - 1] - 1;
     console.log(oldVisit);
     oldVisit = oldVisit.join("_");
 
