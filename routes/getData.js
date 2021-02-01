@@ -68,17 +68,22 @@ const saveVisit = (req, res, user_id, paths) => {
       }
     });
     data.forEach((visit) => {
-      const visitList = new VisitList({
-        visit_id: visit.visit_id,
-      });
-      visitList
-        .save()
-        .then((result) => {
-          console.log("success");
-        })
-        .catch((err) => {
-          console.log("failed");
+      visit.modelPatientList.forEach((patient) => {
+        patient.modelVisitList.forEach((visit) => {
+          const visitList = new VisitList({
+            visit_id: visit.visit_id,
+          });
+          visitList
+            .save()
+            .then((result) => {
+              console.log("success");
+            })
+            .catch((err) => {
+              console.log("failed");
+            });
         });
+      });
+
       visit.modelPatientList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
           return (patient.image = paths[i]);
@@ -93,6 +98,22 @@ const saveVisit = (req, res, user_id, paths) => {
     oldVisit[oldVisit.length - 1] = oldVisit[oldVisit.length - 1] - 1;
     console.log(oldVisit);
     oldVisit = oldVisit.join("_");
+
+    data.modelPatientList.forEach((patient) => {
+      patient.modelVisitList.forEach((visit) => {
+        const visitList = new VisitList({
+          visit_id: visit.visit_id,
+        });
+        visitList
+          .save()
+          .then((result) => {
+            console.log("success");
+          })
+          .catch((err) => {
+            console.log("failed");
+          });
+      });
+    });
 
     VisitList.find({ visit_id: oldVisit }).then((result) => {
       if (result.length > 0) {
