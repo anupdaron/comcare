@@ -128,7 +128,7 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
   } = req.body;
   let path = req.protocol + "://" + req.headers.host + "/public/" + image.name;
 
-  image.mv(path, (error) => {
+  image.mv(`./public/${image.name}`, (error) => {
     if (error) {
       console.error(error);
       res.writeHead(500, {
