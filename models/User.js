@@ -5,12 +5,12 @@ const userSchema = new mongoose.Schema({
   user_id: Number,
   phone: { type: String, unique: true },
   password: String,
-  address: String,
-  name: String,
+  chw_address: String,
+  chw_name: String,
   image: String,
-  dob: String,
-  gender: String,
-  designation: String,
+  chw_dob: String,
+  chw_gender: String,
+  chw_designation: String,
 });
 /*-------------------------
  hash the password before

@@ -49,30 +49,8 @@ RouterGet.post("/api/addVisit", async (req, res) => {
       });
     }
   }
-  User.find({ user_id: req.body.json.appUserId })
-    .then((result) => {
-      if (result.length < 1) {
-        const user = new User({
-          username: "",
-          user_id: req.body.json.appUserId,
-          address: "",
-          dateofbirth: "",
-        });
-        user
-          .save()
-          .then((data) => {
-            saveVisit(req, res, data._id, paths);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        saveVisit(req, res, result._id, paths);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
+  saveVisit(req, res, chw._id, paths);
 });
 
 const saveVisit = (req, res, user_id, paths) => {

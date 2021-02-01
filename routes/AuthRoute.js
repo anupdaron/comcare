@@ -17,17 +17,17 @@ AuthRouter.post("/api/addUser", async (req, res) => {
     }
   });
 });
-const createUser = (req, res, phone, password, user_id) => {
+const createUser = (req, res, phone, password, chw_id) => {
   const user = new User({
-    user_id,
+    chw_id,
     phone,
     password,
-    address: "",
-    name: "",
+    chw_address: "",
+    chw_name: "",
     image: "",
-    dob: "",
-    gender: "",
-    designation: "",
+    chw_dob: "",
+    chw_gender: "",
+    chw_designation: "",
   });
   user
     .save()
@@ -35,7 +35,7 @@ const createUser = (req, res, phone, password, user_id) => {
       res.status(201).json({
         code: "200",
         status: "Success",
-        details: { user_id: result.user_id },
+        details: { chw_id: result.chw_id },
         message: "User Created Successfully",
       });
     })
@@ -78,7 +78,7 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
             res.status(200).json({
               code: "200",
               status: "Success",
-              details: { user_id: result[0].user_id },
+              details: { chw_id: result[0].chw_id },
               message: "User verified Successfully",
             });
           } else {
@@ -104,7 +104,14 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
 
 AuthRouter.post("/api/updateProfile", (req, res) => {
   console.log(req.body, req.files);
-  const { user_id, address, name, dob, gender, designation } = req.body;
+  const {
+    chw_id,
+    chw_address,
+    chw_name,
+    chw_dob,
+    chw_gender,
+    chw_designation,
+  } = req.body;
   let path = req.protocol + "://" + req.headers.host + "/public/" + images.name;
 
   images.mv(path, (error) => {
@@ -118,8 +125,16 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
     }
   });
   User.findOneAndUpdate(
-    { user_id },
-    { address, name, dob, gender, designation, image: path }
+    { chw_id },
+    {
+      chw_id,
+      chw_address,
+      chw_name,
+      chw_dob,
+      chw_gender,
+      chw_designation,
+      image: path,
+    }
   ).then((result) => {
     return res
       .status(200)
