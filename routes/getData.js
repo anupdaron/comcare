@@ -50,23 +50,34 @@ RouterGet.post("/api/addVisit", async (req, res) => {
     }
   }
 
-  saveVisit(req, res, chw._id, paths);
+  saveVisit(req, res, req.body.appUserId, paths);
 });
 
 const saveVisit = (req, res, user_id, paths) => {
   const data = JSON.parse(req.body.json);
+
   let sendAll = false;
   if (Array.isArray(data)) {
-    const oldVisit = data[0].visit_id.split("_");
+    const oldVisit = data[0].visit_id;
     oldVisit = oldVisit[oldVisit.length - 1] - 1;
     oldVisit = oldVisit.join("_");
-
     VisitList.find({ visit_id: oldVisit }).then((result) => {
       if (result.length > 0) {
         return (sendAll = true);
       }
     });
     data.forEach((visit) => {
+      const visitList = new VisitList({
+        visit_id: visit.visit_id,
+      });
+      visitList
+        .save()
+        .then((result) => {
+          console.log("success");
+        })
+        .catch((err) => {
+          console.log("failed");
+        });
       visit.modelPatientList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
           return (patient.image = paths[i]);
@@ -90,6 +101,7 @@ const saveVisit = (req, res, user_id, paths) => {
       }
     });
   }
+
   const visit = new Visit({
     AppUserList: data,
     user: user_id,
@@ -109,7 +121,7 @@ const saveVisit = (req, res, user_id, paths) => {
       }
     })
     .catch((err) =>
-      res.status(200).json({ code: "200", status: "Failure", details: {} })
+      res.status(500).json({ code: "500", status: "Failure", details: {} })
     );
 };
 
