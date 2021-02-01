@@ -126,6 +126,14 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
     chw_gender,
     chw_designation,
   } = req.body;
+  console.log(
+    chw_id,
+    chw_address,
+    chw_name,
+    chw_dob,
+    chw_gender,
+    chw_designation
+  );
   let path = req.protocol + "://" + req.headers.host + "/public/" + image.name;
 
   image.mv(`./public/${image.name}`, (error) => {
