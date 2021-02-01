@@ -51,10 +51,8 @@ const createUser = (req, res, phone, password, user_id) => {
 };
 
 AuthRouter.post("/api/loginUser", async (req, res) => {
-  console.log(req);
-  console.log(req.body);
   const { phone, password } = req.body;
-  console.log(phone, user);
+
   User.findOne({ phone }).then((user) => {
     //if user not exist than return status 400
     if (!user)
