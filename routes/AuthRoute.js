@@ -75,10 +75,22 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
       if (data) {
         User.find({ phone }).then((result) => {
           if (result.length > 0) {
+            let details = { chw_id: result[0].chw_id };
+            if (result[0].chw_name !== "")
+              return (details.chw_name = result[0].chw_name);
+            if (result[0].chw_designation !== "")
+              return (details.chw_designation = result[0].chw_designation);
+            if (result[0].chw_address !== "")
+              return (details.chw_address = result[0].chw_address);
+            if (result[0].chw_gender !== "")
+              return (details.chw_gender = result[0].chw_gender);
+            if (result[0].chw_dob !== "")
+              return (details.chw_dob = result[0].chw_dob);
+
             res.status(200).json({
               code: "200",
               status: "Success",
-              details: { chw_id: result[0].chw_id },
+              details,
               message: "User verified Successfully",
             });
           } else {
