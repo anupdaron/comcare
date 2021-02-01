@@ -54,7 +54,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 });
 
 const saveVisit = (req, res, user_id, paths) => {
-  const data = req.body.json;
+  const data = JSON.parse(req.body.json);
   let sendAll = false;
   if (Array.isArray(data)) {
     let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
