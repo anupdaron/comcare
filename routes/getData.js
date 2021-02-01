@@ -91,6 +91,7 @@ const saveVisit = (req, res, user_id, paths) => {
       "_"
     );
     oldVisit = oldVisit[oldVisit.length - 1] - 1;
+    console.log(oldVisit);
     oldVisit = oldVisit.join("_");
 
     VisitList.find({ visit_id: oldVisit }).then((result) => {
