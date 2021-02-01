@@ -51,6 +51,7 @@ const createUser = (req, res, phone, password, user_id) => {
 };
 
 AuthRouter.post("/api/loginUser", async (req, res) => {
+  console.log(req);
   console.log(req.body);
   const { phone, password } = req.body;
   console.log(phone, user);
