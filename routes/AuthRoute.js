@@ -141,7 +141,6 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
   User.findOneAndUpdate(
     { chw_id },
     {
-      chw_id,
       chw_address,
       chw_name,
       chw_dob,
