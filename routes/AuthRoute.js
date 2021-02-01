@@ -149,24 +149,23 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
       chw_designation,
       image: path,
     }
-  ).then((result) => {
-    return res
-      .status(200)
-      .json({
+  )
+    .then((result) => {
+      return res.status(200).json({
         code: "201",
         status: "Success",
         details: {},
         message: "User Profile updated Successfully",
-      })
-      .catch((err) => {
-        return res.status(500).json({
-          code: "201",
-          status: "Failure",
-          details: {},
-          message: "User Profile updated Successfully",
-        });
       });
-  });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        code: "201",
+        status: "Failure",
+        details: {},
+        message: "User Profile updated Successfully",
+      });
+    });
 });
 
 module.exports = AuthRouter;
