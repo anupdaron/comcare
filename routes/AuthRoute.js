@@ -9,6 +9,7 @@ const DIR = "./public/";
 // user register
 AuthRouter.post("/api/addUser", async (req, res) => {
   const { phone, password } = req.body;
+  console.log(phone, password);
   User.find().then((result) => {
     if (result.length > 0) {
       createUser(req, res, phone, password, result.length + 1);
