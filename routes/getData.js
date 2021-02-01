@@ -57,7 +57,7 @@ const saveVisit = (req, res, user_id, paths) => {
   const data = req.body.json;
   let sendAll = false;
   if (Array.isArray(data)) {
-    const oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
+    let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
       "_"
     );
     oldVisit = oldVisit[oldVisit.length - 1] - 1;
@@ -87,7 +87,7 @@ const saveVisit = (req, res, user_id, paths) => {
     });
   } else {
     console.log(data);
-    const oldVisit = data.modelPatientList[0].modelVisitList[0].visit_id.split(
+    let oldVisit = data.modelPatientList[0].modelVisitList[0].visit_id.split(
       "_"
     );
     oldVisit = oldVisit[oldVisit.length - 1] - 1;
