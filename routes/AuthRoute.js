@@ -86,6 +86,7 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
             if (result[0].chw_gender !== "")
               details.chw_gender = result[0].chw_gender;
             if (result[0].chw_dob !== "") details.chw_dob = result[0].chw_dob;
+            details.image = result[0].image;
 
             res.status(200).json({
               code: "200",
