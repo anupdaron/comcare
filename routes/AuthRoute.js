@@ -103,6 +103,7 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
 });
 
 AuthRouter.post("/api/updateProfile", (req, res) => {
+  console.log(req.body, req.files);
   const { user_id, address, name, dob, gender, designation } = req.body;
   let path = req.protocol + "://" + req.headers.host + "/public/" + images.name;
 
