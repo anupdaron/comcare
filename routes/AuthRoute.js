@@ -34,7 +34,7 @@ const createUser = (req, res, phone, password, user_id) => {
     .then((result) => {
       res.status(201).json({
         code: "200",
-        status: "success",
+        status: "Success",
         details: { user_id: result.user_id },
         message: "User Created Successfully",
       });
@@ -43,7 +43,7 @@ const createUser = (req, res, phone, password, user_id) => {
       console.log(err);
       res.status(500).json({
         code: "500",
-        status: "Failed",
+        status: "Failure",
         details: {},
         message: "Internal Server Error",
       });
@@ -52,12 +52,13 @@ const createUser = (req, res, phone, password, user_id) => {
 
 AuthRouter.post("/api/loginUser", async (req, res) => {
   const { phone, password } = req.body;
+  console.log(phone, user);
   User.findOne({ phone }).then((user) => {
     //if user not exist than return status 400
     if (!user)
       return res.status(400).json({
         code: "400",
-        status: "Failed",
+        status: "Failure",
         details: {},
         message: "User not found",
       });
@@ -76,14 +77,14 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
           if (result.length > 0) {
             res.status(200).json({
               code: "200",
-              status: "success",
+              status: "Success",
               details: { user_id: result[0].user_id },
               message: "User verified Successfully",
             });
           } else {
             res.status(400).json({
               code: "400",
-              status: "Failed",
+              status: "Failure",
               details: {},
               message: "User not found",
             });
@@ -92,7 +93,7 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
       } else {
         return res.status(400).json({
           code: "400",
-          status: "Failed",
+          status: "Failure",
           details: {},
           message: "User not found",
         });
@@ -106,7 +107,24 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
   User.findOneAndUpdate(
     { user_id },
     { address, name, dob, gender, designation }
-  );
+  ).then((result) => {
+    return res
+      .status(200)
+      .json({
+        code: "201",
+        status: "Success",
+        details: {},
+        message: "User Profile updated Successfully",
+      })
+      .catch((err) => {
+        return res.status(500).json({
+          code: "201",
+          status: "Failure",
+          details: {},
+          message: "User Profile updated Successfully",
+        });
+      });
+  });
 });
 
 module.exports = AuthRouter;

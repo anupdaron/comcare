@@ -8,6 +8,7 @@ mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 require("./models/Visit");
 require("./models/User");
+require("./models/VisitList");
 const RouterGet = require("./routes/getData");
 const RouterSend = require("./routes/sendData");
 const PORT = process.env.PORT || 5000;
