@@ -3,6 +3,7 @@ const RouterGet = express.Router();
 const mongoose = require("mongoose");
 const DIR = "./public/";
 const Visit = mongoose.model("Visit");
+const VisitList = mongoose.model("VisitList");
 const User = mongoose.model("User");
 
 // get data from frontend
@@ -76,7 +77,17 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 
 const saveVisit = (req, res, user_id, paths) => {
   const data = JSON.parse(req.body.json);
+  let sendAll = false;
   if (Array.isArray(data)) {
+    const oldVisit = data[0].visit_id.split("_");
+    oldVisit = oldVisit[oldVisit.length - 1] - 1;
+    oldVisit = oldVisit.join("_");
+
+    VisitList.find({ visit_id: oldVisit }).then((result) => {
+      if (result.length > 0) {
+        return (sendAll = true);
+      }
+    });
     data.forEach((visit) => {
       visit.modelPatientList.map((patient) => {
         for (let i = 0; i < paths.length; i++) {
@@ -86,6 +97,15 @@ const saveVisit = (req, res, user_id, paths) => {
     });
   } else {
     console.log(data);
+    const oldVisit = data.visit_id.split("_");
+    oldVisit = oldVisit[oldVisit.length - 1] - 1;
+    oldVisit = oldVisit.join("_");
+
+    VisitList.find({ visit_id: oldVisit }).then((result) => {
+      if (result.length > 0) {
+        return (sendAll = true);
+      }
+    });
     data.modelPatientList.map((patient) => {
       for (let i = 0; i < paths.length; i++) {
         return (patient.image = paths[i]);
@@ -100,9 +120,19 @@ const saveVisit = (req, res, user_id, paths) => {
   visit
     .save()
     .then((result) => {
-      res.status(200).json({ message: "Succesful" });
+      if (sendAll) {
+        Visit.find().then((result) => {
+          res
+            .status(200)
+            .json({ code: "200", status: "Success", details: result });
+        });
+      } else {
+        res.status(200).json({ code: "200", status: "Success", details: {} });
+      }
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      res.status(200).json({ code: "200", status: "Failure", details: {} })
+    );
 };
 
 module.exports = RouterGet;

@@ -104,9 +104,21 @@ AuthRouter.post("/api/loginUser", async (req, res) => {
 
 AuthRouter.post("/api/updateProfile", (req, res) => {
   const { user_id, address, name, dob, gender, designation } = req.body;
+  let path = req.protocol + "://" + req.headers.host + "/public/" + images.name;
+
+  images.mv(path, (error) => {
+    if (error) {
+      console.error(error);
+      res.writeHead(500, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify({ status: "error", message: error }));
+      return;
+    }
+  });
   User.findOneAndUpdate(
     { user_id },
-    { address, name, dob, gender, designation }
+    { address, name, dob, gender, designation, image: path }
   ).then((result) => {
     return res
       .status(200)
