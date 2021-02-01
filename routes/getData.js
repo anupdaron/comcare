@@ -10,8 +10,8 @@ const User = mongoose.model("User");
 RouterGet.post("/api/addVisit", async (req, res) => {
   console.log(req.body.json);
   let paths = [];
-  if (!req.files)
-    return res.status(400).json({ error: "Invalid request, image required" });
+  // if (!req.files)
+  //   return res.status(400).json({ error: "Invalid request, image required" });
   if (req.files) {
     console.log(req.files);
     const images = req.files.image;
