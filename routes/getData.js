@@ -148,7 +148,7 @@ const saveVisit = (req, res, user_id, paths) => {
     );
 };
 
-RouterGet.post("/checkVisit", (req, response) => {
+RouterGet.post("/api/checkVisit", (req, response) => {
   console.log(req.body);
   const { visit_id } = req.body;
   const user_id = visit_id.split("_")[0];
