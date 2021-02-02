@@ -57,12 +57,6 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 
 const saveVisit = (req, res, user_id, paths) => {
   const data = JSON.parse(req.body.json);
-  let user;
-  User.find({ chw_id: user_id }).then((result) => {
-    if (result > 0) {
-      user = result[0]._id;
-    }
-  });
   let sendAll = false;
   if (Array.isArray(data)) {
     // let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
@@ -84,7 +78,7 @@ const saveVisit = (req, res, user_id, paths) => {
       visit.modelPatientList.forEach((patient) => {
         const currentPatient = new Patient({
           patient,
-          user,
+          user: visit.appUserId,
           patient_id: patient.patientId,
         });
 
@@ -112,7 +106,7 @@ const saveVisit = (req, res, user_id, paths) => {
     data.modelPatientList.forEach((patient) => {
       const currentPatient = new Patient({
         patient,
-        user,
+        user: data.appUserId,
         patient_id: patient.patientId,
       });
 
