@@ -148,11 +148,12 @@ const saveVisit = (req, res, user_id, paths) => {
     );
 };
 
-RouterGet.post("/checkVisit", (req, res) => {
+RouterGet.post("/checkVisit", (req, response) => {
   console.log(req.body);
   const { visit_id } = req.body;
   const user_id = visit_id.split("_")[0];
   console.log(user_id);
+
   if (Array.isArray(visit_id)) {
     let modelPatientList = [];
     visit_id.forEach((visit_id) => {
@@ -162,8 +163,8 @@ RouterGet.post("/checkVisit", (req, res) => {
           { user: user_id },
         ],
       })
-        .then(async (result) => {
-          await result.forEach((item) => {
+        .then((result) => {
+          result.forEach((item) => {
             modelPatientList.push(item.patient);
           });
         })
@@ -171,6 +172,7 @@ RouterGet.post("/checkVisit", (req, res) => {
           console.log(err);
         });
     });
+    response.status(200).json({ appUserId: user_id, modelPatientList });
   } else {
     Patient.find({
       $and: [
@@ -183,13 +185,12 @@ RouterGet.post("/checkVisit", (req, res) => {
         result.forEach((item) => {
           modelPatientList.push(item.patient);
         });
-        //  ​res.send("hh");
+        response.status(200).json({ appUserId: user_id, modelPatientList });
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  // ​res.status(200).json({appUserId:user_id,modelPatientList:modelPatientList})
 });
 
 module.exports = RouterGet;
