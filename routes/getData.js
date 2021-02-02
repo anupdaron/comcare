@@ -149,11 +149,11 @@ const saveVisit = (req, res, user_id, paths) => {
       });
     });
 
-    VisitList.find({ visit_id: oldVisit }).then((result) => {
-      if (result.length > 0) {
-        return (sendAll = true);
-      }
-    });
+    // VisitList.find({ visit_id: oldVisit }).then((result) => {
+    //   if (result.length > 0) {
+    //     return (sendAll = true);
+    //   }
+    // });
   }
 
   const visit = new Visit({
