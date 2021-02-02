@@ -34,6 +34,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
           }
         });
       });
+      saveVisit(req, res, req.body.json[0].appUserId, paths);
     } else {
       let path =
         req.protocol + "://" + req.headers.host + "/public/" + images.name;
@@ -49,10 +50,9 @@ RouterGet.post("/api/addVisit", async (req, res) => {
           return;
         }
       });
+      saveVisit(req, res, req.body.json.appUserId, paths);
     }
   }
-
-  saveVisit(req, res, req.body.appUserId, paths);
 });
 
 const saveVisit = (req, res, user_id, paths) => {
