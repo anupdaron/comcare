@@ -149,15 +149,47 @@ const saveVisit = (req, res, user_id, paths) => {
 };
 
 RouterGet.post("/checkVisit", (req, res) => {
+  console.log(req.body);
   const { visit_id } = req.body;
   const user_id = visit_id.split("_")[0];
-  Patient.find({ visit_id, user_id })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log(err);
+  console.log(user_id);
+  if (Array.isArray(visit_id)) {
+    let modelPatientList = [];
+    visit_id.forEach((visit_id) => {
+      Patient.find({
+        $and: [
+          { "patient.modelVisitList": { $elemMatch: { visit_id } } },
+          { user: user_id },
+        ],
+      })
+        .then(async (result) => {
+          await result.forEach((item) => {
+            modelPatientList.push(item.patient);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
+  } else {
+    Patient.find({
+      $and: [
+        { "patient.modelVisitList": { $elemMatch: { visit_id } } },
+        { user: user_id },
+      ],
+    })
+      .then((result) => {
+        let modelPatientList = [];
+        result.forEach((item) => {
+          modelPatientList.push(item.patient);
+        });
+        //  ​res.send("hh");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  // ​res.status(200).json({appUserId:user_id,modelPatientList:modelPatientList})
 });
 
 module.exports = RouterGet;
