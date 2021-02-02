@@ -148,4 +148,16 @@ const saveVisit = (req, res, user_id, paths) => {
     );
 };
 
+RouterGet.post("/checkVisit", (req, res) => {
+  const { visit_id, user_id } = req.body;
+  const user_id = visit_id.split("_")[0];
+  Patient.find({ visit_id, user_id })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = RouterGet;
