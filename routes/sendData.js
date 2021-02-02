@@ -3,6 +3,8 @@ const RouterSend = express.Router();
 const mongoose = require("mongoose");
 var fs = require("fs");
 const Visit = mongoose.model("Visit");
+const Patient = mongoose.model("Patient");
+const VisitList = mongoose.model("VisitList");
 
 // send data
 RouterSend.get("/api/syncVisit", (req, res) => {
