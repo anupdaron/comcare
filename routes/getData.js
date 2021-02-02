@@ -78,7 +78,7 @@ const saveVisit = (req, res, user_id, paths) => {
       visit.modelPatientList.forEach((patient) => {
         const currentPatient = new Patient({
           patient,
-          user: visit.appUserId,
+          user: user_id,
           patient_id: patient.patientId,
         });
 
@@ -106,7 +106,7 @@ const saveVisit = (req, res, user_id, paths) => {
     data.modelPatientList.forEach((patient) => {
       const currentPatient = new Patient({
         patient,
-        user: data.appUserId,
+        user: user_id,
         patient_id: patient.patientId,
       });
 
