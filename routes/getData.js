@@ -82,29 +82,16 @@ const saveVisit = (req, res, user_id, paths) => {
         }
       });
       visit.modelPatientList.forEach((patient) => {
-        patient.modelVisitList.forEach((visit) => {
-          const currentPatient = new Patient({
-            patient,
-            user,
-            patient_id: patient.patientId,
-          });
-          currentPatient.save().then((result) => {
-            if (result > 0) {
-              const visitList = new VisitList({
-                visit,
-                user,
-                patient: result[0]._id,
-              });
-              visitList
-                .save()
-                .then((result) => {
-                  console.log("success");
-                })
-                .catch((err) => {
-                  console.log("failed");
-                });
-            }
-          });
+        const currentPatient = new Patient({
+          patient,
+          user,
+          patient_id: patient.patientId,
+        });
+
+        currentPatient.save().then((result) => {
+          if (result > 0) {
+            console.log("success");
+          }
         });
       });
     });
@@ -123,29 +110,16 @@ const saveVisit = (req, res, user_id, paths) => {
     });
 
     data.modelPatientList.forEach((patient) => {
-      patient.modelVisitList.forEach((visit) => {
-        const currentPatient = new Patient({
-          patient,
-          user,
-          patient_id: patient.patientId,
-        });
-        currentPatient.save().then((result) => {
-          if (result > 0) {
-            const visitList = new VisitList({
-              visit,
-              user,
-              patient: result[0]._id,
-            });
-            visitList
-              .save()
-              .then((result) => {
-                console.log("success");
-              })
-              .catch((err) => {
-                console.log("failed");
-              });
-          }
-        });
+      const currentPatient = new Patient({
+        patient,
+        user,
+        patient_id: patient.patientId,
+      });
+
+      currentPatient.save().then((result) => {
+        if (result > 0) {
+          console.log("success");
+        }
       });
     });
 
