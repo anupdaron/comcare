@@ -148,7 +148,7 @@ const saveVisit = (req, res, user_id, paths) => {
     );
 };
 
-RouterGet.post("/api/checkVisit", async (req, response) => {
+RouterGet.post("/api/checkVisit", (req, response) => {
   console.log(req.body);
   const visit_id = req.body;
   if (visit_id.length > 0) {
@@ -165,7 +165,7 @@ RouterGet.post("/api/checkVisit", async (req, response) => {
           ],
         })
           .then((result) => {
-           await result.forEach((item) => {
+            result.forEach((item) => {
               modelPatientList.push(item.patient);
             });
             response.status(200).json({ appUserId: user_id, modelPatientList });
