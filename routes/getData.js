@@ -165,16 +165,17 @@ RouterGet.post("/api/checkVisit",async (req, response) => {
           ],
         })
           .then((result) => {
-            result.forEach((item) => {
+           await result.forEach((item) => {
               modelPatientList.push(item.patient);
             });
+            response.status(200).json({ appUserId: user_id, modelPatientList });
           })
           .catch((err) => {
             console.log(err);
           });
       });
       console.log(modelPatientList);
-      response.status(200).json({ appUserId: user_id, modelPatientList });
+      
     } else {
       Patient.find({
         $and: [
