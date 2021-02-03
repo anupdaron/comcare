@@ -148,7 +148,7 @@ const saveVisit = (req, res, user_id, paths) => {
     );
 };
 
-RouterGet.post("/api/checkVisit",async (req, response) => {
+RouterGet.post("/api/checkVisit", async (req, response) => {
   console.log(req.body);
   const visit_id = req.body;
   if (visit_id.length > 0) {
@@ -158,7 +158,7 @@ RouterGet.post("/api/checkVisit",async (req, response) => {
     if (Array.isArray(visit_id)) {
       let modelPatientList = [];
       visit_id.forEach((visit_id) => {
-       await Patient.find({
+        Patient.find({
           $and: [
             { "patient.modelVisitList": { $elemMatch: { $ne: visit_id } } },
             { user: user_id },
@@ -175,7 +175,6 @@ RouterGet.post("/api/checkVisit",async (req, response) => {
           });
       });
       console.log(modelPatientList);
-      
     } else {
       Patient.find({
         $and: [
