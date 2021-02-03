@@ -150,7 +150,7 @@ const saveVisit = (req, res, user_id, paths) => {
 
 RouterGet.post("/api/checkVisit", (req, response) => {
   console.log(req.body);
-  const { visit_id } = req.body;
+  const visit_id = req.body;
   if (visit_id.length > 0) {
     const user_id = visit_id[0].split("_")[0];
     console.log(user_id);
