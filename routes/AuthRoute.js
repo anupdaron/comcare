@@ -10,13 +10,16 @@ const DIR = "./public/";
 AuthRouter.post("/api/addUser", async (req, res) => {
   const { phone, password } = req.body;
   console.log(phone, password);
-  User.find().then((result) => {
-    if (result.length > 0) {
-      createUser(req, res, phone, password, result.length + 1);
-    } else {
-      createUser(req, res, phone, password, 1);
-    }
-  });
+  User.find()
+    .sort({ chw_id: 1 })
+    .limit(1)
+    .then((result) => {
+      if (result.length > 0) {
+        createUser(req, res, phone, password, result[0] + 1);
+      } else {
+        createUser(req, res, phone, password, 1);
+      }
+    });
 });
 const createUser = (req, res, phone, password, chw_id) => {
   const user = new User({
@@ -34,7 +37,7 @@ const createUser = (req, res, phone, password, chw_id) => {
     .save()
     .then((result) => {
       res.status(201).json({
-        code: "200",
+        code: "201",
         status: "Success",
         details: { chw_id: result.chw_id },
         message: "User Created Successfully",
