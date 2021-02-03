@@ -168,13 +168,13 @@ RouterGet.post("/api/checkVisit", (req, response) => {
             result.forEach((item) => {
               modelPatientList.push(item.patient);
             });
+            console.log(modelPatientList);
             response.status(200).json({ appUserId: user_id, modelPatientList });
           })
           .catch((err) => {
             console.log(err);
           });
       });
-      console.log(modelPatientList);
     } else {
       Patient.find({
         $and: [

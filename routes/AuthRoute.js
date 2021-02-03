@@ -51,6 +51,28 @@ const createUser = (req, res, phone, password, chw_id) => {
     });
 };
 
+AuthRouter.post("/api/deleteUser", (req, res) => {
+  const { phone } = req.body;
+
+  User.deleteOne({ phone })
+    .then((result) => {
+      return res.status(200).json({
+        code: "200",
+        status: "Success",
+        details: {},
+        message: `User ${phone} was deleted successfully`,
+      });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        code: "400",
+        status: "Failure",
+        details: {},
+        message: "User not found",
+      });
+    });
+});
+
 AuthRouter.post("/api/loginUser", async (req, res) => {
   const { phone, password } = req.body;
 
