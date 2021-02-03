@@ -151,35 +151,50 @@ const saveVisit = (req, res, user_id, paths) => {
 RouterGet.post("/api/checkVisit", (req, response) => {
   console.log(req.body);
   const { visit_id } = req.body;
-  const user_id = visit_id.split("_")[0];
-  console.log(user_id);
+  if (visit_id.length > 0) {
+    const user_id = visit_id[0].split("_")[0];
+    console.log(user_id);
 
-  if (Array.isArray(visit_id)) {
-    let modelPatientList = [];
-    visit_id.forEach((visit_id) => {
+    if (Array.isArray(visit_id)) {
+      let modelPatientList = [];
+      visit_id.forEach((visit_id) => {
+        Patient.find({
+          $and: [
+            { "patient.modelVisitList": { $elemMatch: { $ne: visit_id } } },
+            { user: user_id },
+          ],
+        })
+          .then((result) => {
+            result.forEach((item) => {
+              modelPatientList.push(item.patient);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      response.status(200).json({ appUserId: user_id, modelPatientList });
+    } else {
       Patient.find({
         $and: [
-          { "patient.modelVisitList": { $elemMatch: { visit_id } } },
+          { "patient.modelVisitList": { $elemMatch: { $ne: visit_id } } },
           { user: user_id },
         ],
       })
         .then((result) => {
+          let modelPatientList = [];
           result.forEach((item) => {
             modelPatientList.push(item.patient);
           });
+          response.status(200).json({ appUserId: user_id, modelPatientList });
         })
         .catch((err) => {
           console.log(err);
         });
-    });
-    response.status(200).json({ appUserId: user_id, modelPatientList });
+    }
   } else {
-    Patient.find({
-      $and: [
-        { "patient.modelVisitList": { $elemMatch: { visit_id } } },
-        { user: user_id },
-      ],
-    })
+    const user_id = visit_id.split("_")[0];
+    Patient.find({ user: user_id })
       .then((result) => {
         let modelPatientList = [];
         result.forEach((item) => {
