@@ -36,6 +36,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
       });
       saveVisit(req, res, req.body.json[0].appUserId, paths);
     } else {
+      console.log("in the first");
       let path =
         req.protocol + "://" + req.headers.host + "/public/" + images.name;
       newPath = DIR + images.name;
