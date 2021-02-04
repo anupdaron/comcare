@@ -148,7 +148,7 @@ const saveVisit = (req, res, user_id, paths) => {
     .save()
     .then((result) => {
       if (sendAll) {
-        Visit.find({ appUserId: data.appUserId }).then((result) => {
+        Visit.find({ chw_id: data.appUserId }).then((result) => {
           res
             .status(200)
             .json({ code: "200", status: "Success", details: result });
