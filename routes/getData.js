@@ -55,9 +55,19 @@ RouterGet.post("/api/addVisit", async (req, res) => {
   }
 });
 
+function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return isNaN(str);
+}
 const saveVisit = (req, res, user_id, paths) => {
   console.log(user_id);
-  const data = JSON.parse(req.body.json);
+
+  const data = isJson(req.body.json);
+
   let sendAll = false;
   if (Array.isArray(data)) {
     // let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
