@@ -9,7 +9,7 @@ const User = mongoose.model("User");
 
 // get data from frontend
 RouterGet.post("/api/addVisit", async (req, res) => {
-  console.log(req.body.json);
+  // console.log(req.body.json);
 
   let paths = [];
   // if (!req.files)
@@ -65,8 +65,8 @@ function isJson(str) {
   return JSON.parse(str);
 }
 const saveVisit = (req, res, user_id, paths) => {
+  console.log("i am here");
   console.log(user_id);
-
   const data = isJson(req.body.json);
   console.log(data);
 
