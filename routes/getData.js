@@ -59,9 +59,9 @@ function isJson(str) {
   try {
     JSON.parse(str);
   } catch (e) {
-    return false;
+    return str;
   }
-  return str;
+  return JSON.parse(str);
 }
 const saveVisit = (req, res, user_id, paths) => {
   console.log(user_id);
