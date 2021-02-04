@@ -157,9 +157,10 @@ const saveVisit = (req, res, user_id, paths) => {
         res.status(200).json({ code: "200", status: "Success", details: {} });
       }
     })
-    .catch((err) =>
-      res.status(500).json({ code: "500", status: "Failure", details: {} })
-    );
+    .catch((err) => {
+      console.log("first");
+      res.status(500).json({ code: "500", status: "Failure", details: {} });
+    });
 };
 
 RouterGet.post("/api/checkVisit", (req, response) => {
