@@ -158,7 +158,7 @@ const saveVisit = (req, res, user_id, paths) => {
       }
     })
     .catch((err) => {
-      console.log("first");
+      console.log("first", err);
       res.status(500).json({ code: "500", status: "Failure", details: {} });
     });
 };
