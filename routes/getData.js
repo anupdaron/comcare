@@ -57,9 +57,21 @@ RouterGet.post("/api/addVisit", async (req, res) => {
   }
 });
 
+function isValidJsonString(jsonString) {
+  if (!(jsonString && typeof jsonString === "string")) {
+    return false;
+  }
+
+  try {
+    JSON.parse(jsonString);
+    return JSON.parse(jsonString);
+  } catch (error) {
+    return jsonString;
+  }
+}
+
 const saveVisit = (req, res, user_id, paths) => {
-  console.log(typeof req.body.json);
-  const data = JSON.parse(req.body.json);
+  const data = isValidJsonString(req.body.json);
   let sendAll = false;
   if (Array.isArray(data)) {
     // let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
