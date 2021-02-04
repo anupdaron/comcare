@@ -58,7 +58,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 });
 
 const saveVisit = (req, res, user_id, paths) => {
-  console.log(req.body.json);
+  console.log(typeof req.body.json);
   const data = JSON.parse(req.body.json);
   let sendAll = false;
   if (Array.isArray(data)) {
