@@ -15,6 +15,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
   // if (!req.files)
   //   return res.status(400).json({ error: "Invalid request, image required" });
   if (req.files) {
+    console.log("the first one");
     console.log(req.files);
     const images = req.files.image;
     if (Array.isArray(images)) {
