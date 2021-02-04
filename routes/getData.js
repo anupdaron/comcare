@@ -61,7 +61,7 @@ function isJson(str) {
   } catch (e) {
     return false;
   }
-  return isNaN(str);
+  return str;
 }
 const saveVisit = (req, res, user_id, paths) => {
   console.log(user_id);
