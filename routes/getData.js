@@ -37,25 +37,25 @@ RouterGet.post("/api/addVisit", async (req, res) => {
         });
       });
       saveVisit(req, res, req.body.json[0].appUserId, paths);
-    } else {
-      console.log("in the first");
-      let path =
-        req.protocol + "://" + req.headers.host + "/public/" + images.name;
-      newPath = DIR + images.name;
-      paths.push(path);
-      images.mv(newPath, (error) => {
-        if (error) {
-          console.error(error);
-          res.writeHead(500, {
-            "Content-Type": "application/json",
-          });
-          res.end(JSON.stringify({ status: "error", message: error }));
-          return;
-        }
-      });
-      console.log("ibasfasg");
-      saveVisit(req, res, req.body.json.appUserId, paths);
     }
+  } else {
+    console.log("in the first");
+    let path =
+      req.protocol + "://" + req.headers.host + "/public/" + images.name;
+    newPath = DIR + images.name;
+    paths.push(path);
+    images.mv(newPath, (error) => {
+      if (error) {
+        console.error(error);
+        res.writeHead(500, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify({ status: "error", message: error }));
+        return;
+      }
+    });
+    console.log("ibasfasg");
+    saveVisit(req, res, req.body.json.appUserId, paths);
   }
 });
 
