@@ -50,6 +50,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
           return;
         }
       });
+      console.log("ibasfasg");
       saveVisit(req, res, req.body.json.appUserId, paths);
     }
   }
