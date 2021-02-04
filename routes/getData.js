@@ -59,7 +59,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
 
 function isValidJsonString(jsonString) {
   if (!(jsonString && typeof jsonString === "string")) {
-    return false;
+    return jsonString;
   }
 
   try {
