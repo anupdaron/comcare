@@ -9,13 +9,13 @@ const User = mongoose.model("User");
 
 // get data from frontend
 RouterGet.post("/api/addVisit", async (req, res) => {
-  // console.log(req.body.json);
+  console.log(req.body.json);
 
   let paths = [];
   // if (!req.files)
   //   return res.status(400).json({ error: "Invalid request, image required" });
-  console.log("begin");
   if (req.files) {
+    console.log(req.files);
     const images = req.files.image;
     if (Array.isArray(images)) {
       await images.forEach((image) => {
@@ -35,43 +35,31 @@ RouterGet.post("/api/addVisit", async (req, res) => {
         });
       });
       saveVisit(req, res, req.body.json[0].appUserId, paths);
+    } else {
+      let path =
+        req.protocol + "://" + req.headers.host + "/public/" + images.name;
+      newPath = DIR + images.name;
+      paths.push(path);
+      images.mv(newPath, (error) => {
+        if (error) {
+          console.error(error);
+          res.writeHead(500, {
+            "Content-Type": "application/json",
+          });
+          res.end(JSON.stringify({ status: "error", message: error }));
+          return;
+        }
+      });
+      saveVisit(req, res, req.body.json.appUserId, paths);
     }
   } else {
-    let images = "";
-    let path =
-      req.protocol + "://" + req.headers.host + "/public/" + images.name;
-    newPath = DIR + images.name;
-    paths.push(path);
-    images.mv(newPath, (error) => {
-      if (error) {
-        console.error(error);
-        res.writeHead(500, {
-          "Content-Type": "application/json",
-        });
-        res.end(JSON.stringify({ status: "error", message: error }));
-        return;
-      }
-    });
-    console.log("ibasfasg");
-    saveVisit(req, res, req.body.json.appUserId, paths);
+    saveVisit(req, res, req.body.json.appUserId, "");
   }
 });
 
-function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    console.log(e);
-    return str;
-  }
-  return JSON.parse(str);
-}
 const saveVisit = (req, res, user_id, paths) => {
-  console.log("i am here");
   console.log(user_id);
-  const data = isJson(req.body.json);
-  console.log(data);
-
+  const data = JSON.parse(req.body.json);
   let sendAll = false;
   if (Array.isArray(data)) {
     // let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
