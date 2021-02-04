@@ -16,8 +16,6 @@ RouterGet.post("/api/addVisit", async (req, res) => {
   //   return res.status(400).json({ error: "Invalid request, image required" });
   console.log("begin");
   if (req.files) {
-    console.log("the first one");
-    console.log(req.files);
     const images = req.files.image;
     if (Array.isArray(images)) {
       await images.forEach((image) => {
@@ -39,7 +37,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
       saveVisit(req, res, req.body.json[0].appUserId, paths);
     }
   } else {
-    console.log("in the first");
+    let images = "";
     let path =
       req.protocol + "://" + req.headers.host + "/public/" + images.name;
     newPath = DIR + images.name;
