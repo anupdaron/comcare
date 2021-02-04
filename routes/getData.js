@@ -59,6 +59,7 @@ function isJson(str) {
   try {
     JSON.parse(str);
   } catch (e) {
+    console.log(e);
     return str;
   }
   return JSON.parse(str);
