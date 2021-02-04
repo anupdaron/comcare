@@ -67,6 +67,7 @@ const saveVisit = (req, res, user_id, paths) => {
   console.log(user_id);
 
   const data = isJson(req.body.json);
+  console.log(data);
 
   let sendAll = false;
   if (Array.isArray(data)) {
