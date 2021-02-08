@@ -15,7 +15,7 @@ RouterGet.post("/api/addVisit", async (req, res) => {
   if (req.files) {
     let images = req.files.image;
     if (!Array.isArray(images)) {
-      images = array(images);
+      images = new Array(images);
     }
     await images.forEach((image) => {
       let path = "https://" + req.headers.host + "/public/" + image.name;
