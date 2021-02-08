@@ -1,9 +1,25 @@
 const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema({
-  patient: Array,
-  patient_id: String,
   user: String,
+  patientAddedDate: String,
+  patientAge: String,
+  patientDob: String,
+  patientFirstName: String,
+  patientFullName: String,
+  patientGender: String,
+  patientHouseno: String,
+  patientId: String,
+  patientLastName: String,
+  patientMiddleName: String,
+  patientMunicipality: String,
+  patientPhone: String,
+  patientSpouseFullName: String,
+  patientVillagename: String,
+  patientspousefirstname: String,
+  patientspouselastname: String,
+  patientwardno: String,
+  image: String,
 });
 // patientSchema.pre("save", function (next) {
 //   var self = this;

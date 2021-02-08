@@ -14,8 +14,9 @@ AuthRouter.post("/api/addUser", async (req, res) => {
     .sort({ chw_id: 1 })
     .limit(1)
     .then((result) => {
+      console.log(result);
       if (result.length > 0) {
-        createUser(req, res, phone, password, result[0] + 1);
+        createUser(req, res, phone, password, result[0].chw_id + 1);
       } else {
         createUser(req, res, phone, password, 1);
       }
@@ -159,7 +160,7 @@ AuthRouter.post("/api/updateProfile", (req, res) => {
     chw_gender,
     chw_designation
   );
-  let path = req.protocol + "://" + req.headers.host + "/public/" + image.name;
+  let path = "https://api.asha.ayata.com.np/public/" + image.name;
 
   image.mv(`./public/${image.name}`, (error) => {
     if (error) {

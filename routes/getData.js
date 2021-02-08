@@ -9,38 +9,19 @@ const User = mongoose.model("User");
 
 // get data from frontend
 RouterGet.post("/api/addVisit", async (req, res) => {
-  console.log(req.body.json);
-
   let paths = [];
   // if (!req.files)
   //   return res.status(400).json({ error: "Invalid request, image required" });
   if (req.files) {
-    console.log(req.files);
-    const images = req.files.image;
-    if (Array.isArray(images)) {
-      await images.forEach((image) => {
-        let path =
-          req.protocol + "://" + req.headers.host + "/public/" + image.name;
-        newPath = DIR + image.name;
-        paths.push(path);
-        image.mv(newPath, (error) => {
-          if (error) {
-            console.error(error);
-            res.writeHead(500, {
-              "Content-Type": "application/json",
-            });
-            res.end(JSON.stringify({ status: "error", message: error }));
-            return;
-          }
-        });
-      });
-      saveVisit(req, res, req.body.json[0].appUserId, paths);
-    } else {
-      let path =
-        req.protocol + "://" + req.headers.host + "/public/" + images.name;
-      newPath = DIR + images.name;
+    let images = req.files.image;
+    if (!Array.isArray(images)) {
+      images = array(images);
+    }
+    await images.forEach((image) => {
+      let path = "https://" + req.headers.host + "/public/" + image.name;
+      newPath = DIR + image.name;
       paths.push(path);
-      images.mv(newPath, (error) => {
+      image.mv(newPath, (error) => {
         if (error) {
           console.error(error);
           res.writeHead(500, {
@@ -50,13 +31,11 @@ RouterGet.post("/api/addVisit", async (req, res) => {
           return;
         }
       });
-      saveVisit(req, res, req.body.json.appUserId, paths);
-    }
-  } else {
-    saveVisit(req, res, req.body.json.appUserId, "");
+    });
+    savePatient(req, res, paths);
   }
 });
-
+//check json
 function isValidJsonString(jsonString) {
   if (!(jsonString && typeof jsonString === "string")) {
     return jsonString;
@@ -70,92 +49,84 @@ function isValidJsonString(jsonString) {
   }
 }
 
-const saveVisit = (req, res, user_id, paths) => {
-  const data = isValidJsonString(req.body.json);
-  let sendAll = false;
-  if (Array.isArray(data)) {
-    // let oldVisit = data[0].modelPatientList[0].modelVisitList[0].visit_id.split(
-    //   "_"
-    // );
-    // oldVisit[oldVisit.length - 1] = oldVisit[oldVisit.length - 1] - 1;
-    // oldVisit = oldVisit.join("_");
-    // VisitList.find({ visit_id: oldVisit }).then((result) => {
-    //   if (result.length > 0) {
-    //     return (sendAll = true);
-    //   }
-    // });
-    data.forEach((visit) => {
-      visit.modelPatientList.map((patient) => {
-        for (let i = 0; i < paths.length; i++) {
-          return (patient.image = paths[i]);
-        }
-      });
-      visit.modelPatientList.forEach((patient) => {
-        const currentPatient = new Patient({
-          patient,
-          user: data.appUserId,
-          patient_id: patient.patientId,
-        });
-
-        currentPatient.save().then((result) => {
-          if (result > 0) {
-            console.log("success");
-          }
-        });
-      });
-    });
-  } else {
-    console.log(data);
-    // let oldVisit = data.modelPatientList[0].modelVisitList[0].visit_id.split(
-    //   "_"
-    // );
-    // oldVisit[oldVisit.length - 1] = oldVisit[oldVisit.length - 1] - 1;
-    // console.log(oldVisit);
-    // oldVisit = oldVisit.join("_");
-    data.modelPatientList.map((patient) => {
-      for (let i = 0; i < paths.length; i++) {
-        return (patient.image = paths[i]);
-      }
-    });
-
-    data.modelPatientList.forEach((patient) => {
-      const currentPatient = new Patient({
-        patient,
-        user: data.appUserId,
-        patient_id: patient.patientId,
-      });
-
-      currentPatient.save().then((result) => {
-        if (result > 0) {
-          console.log("success");
-        }
-      });
-    });
-
-    // VisitList.find({ visit_id: oldVisit }).then((result) => {
-    //   if (result.length > 0) {
-    //     return (sendAll = true);
-    //   }
-    // });
+const savePatient = (req, res, paths) => {
+  console.log("in patient");
+  console.log(paths);
+  let data = isValidJsonString(req.body.json);
+  if (!Array.isArray(data)) {
+    data = [data];
   }
+  data.forEach((data) => {
+    console.log(data);
+    let i = 0;
+    data.modelPatientList.forEach((patient) => {
+      console.log(patient);
+      Patient.find({ patientId: patient.patientId }).then((result) => {
+        if (result.length > 0) {
+          console.log("patient exists");
+        } else {
+          const newPatient = new Patient({
+            user: data.appUserId,
+            patientAddedDate: patient.patientAddedDate,
+            patientAge: patient.patientAge,
+            patientDob: patient.patientDob,
+            patientFirstName: patient.patientFirstName,
+            patientFullName: patient.patientFullName,
+            patientGender: patient.patientGender,
+            patientHouseno: patient.patientHouseno,
+            patientId: patient.patientId,
+            patientLastName: patient.patientLastName,
+            patientMiddleName: patient.patientMiddleName,
+            patientMunicipality: patient.patientMunicipality,
+            patientPhone: patient.patientPhone,
+            patientSpouseFullName: patient.patientSpouseFullName,
+            patientVillagename: patient.patientVillagename,
+            patientspousefirstname: patient.patientspousefirstname,
+            patientspouselastname: patient.patientspouselastname,
+            patientwardno: patient.patientwardno,
+            image: paths[i],
+          });
+          newPatient
+            .save()
+            .then((result) => {
+              console.log("success sith patient");
+            })
+            .then((err) => {
+              console.log(err);
+            });
+        }
+      });
+      i++;
+
+      patient.modelVisitList.forEach((visit) => {
+        const visitList = new VisitList({
+          visit,
+          user_id: data.appUserId,
+          patientId: patient.patientId,
+        });
+        visitList.save().then((result) => {
+          console.log("success with visitlist");
+        });
+      });
+    });
+    data.modelPatientList.forEach((patient) => {
+      Patient.find({ patientId: patient.patientId }).then((result) => {
+        if (result.length > 0) {
+          patient.image = result[0].image;
+        }
+      });
+    });
+  });
 
   const visit = new Visit({
     AppUserList: data,
-    user: user_id,
+    user: data[0].appUserId,
     synced: false,
   });
   visit
     .save()
     .then((result) => {
-      if (sendAll) {
-        Visit.find({ user: data.appUserId }).then((result) => {
-          res
-            .status(200)
-            .json({ code: "200", status: "Success", details: result });
-        });
-      } else {
-        res.status(200).json({ code: "200", status: "Success", details: {} });
-      }
+      res.status(200).json({ code: "200", status: "Success", details: {} });
     })
     .catch((err) => {
       console.log("first", err);
@@ -163,65 +134,138 @@ const saveVisit = (req, res, user_id, paths) => {
     });
 };
 
-RouterGet.post("/api/checkVisit", (req, response) => {
-  console.log(req.body);
+RouterGet.post("/api/checkVisit", async (req, res) => {
   const visit_id = req.body;
-  if (visit_id.length > 0) {
-    const user_id = visit_id[0].split("_")[0];
-    console.log(user_id);
-
-    if (Array.isArray(visit_id)) {
-      let modelPatientList = [];
-      visit_id.forEach((visit_id) => {
-        Patient.find({
-          $and: [
-            { "patient.modelVisitList": { $elemMatch: { $ne: visit_id } } },
-            { user: user_id },
-          ],
-        })
-          .then((result) => {
-            result.forEach((item) => {
-              modelPatientList.push(item.patient);
-            });
-            console.log(modelPatientList);
-            response.status(200).json({ appUserId: user_id, modelPatientList });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    } else {
-      Patient.find({
-        $and: [
-          { "patient.modelVisitList": { $elemMatch: { $ne: visit_id } } },
-          { user: user_id },
-        ],
-      })
-        .then((result) => {
-          let modelPatientList = [];
-          result.forEach((item) => {
-            modelPatientList.push(item.patient);
-          });
-          response.status(200).json({ appUserId: user_id, modelPatientList });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  } else {
-    const user_id = visit_id.split("_")[0];
-    Patient.find({ user: user_id })
+  console.log(visit_id);
+  const user_id = visit_id[0].split("_")[0];
+  let modelPatientList = [];
+  visit_id.forEach((visit_id) => {
+    VisitList.find({
+      visit: { $elemMatch: { visit_id: { $ne: visit_id } } },
+      user_id,
+    })
       .then((result) => {
-        let modelPatientList = [];
-        result.forEach((item) => {
-          modelPatientList.push(item.patient);
-        });
-        response.status(200).json({ appUserId: user_id, modelPatientList });
+        if (result.length < 1) {
+          res.status(200).json({ appUserId: user_id, modelPatientList });
+        }
+        let patients = [];
+        let visits = result;
+        let visitList = [];
+
+        let i = 0;
+        function firstCallback() {
+          return new Promise((resolve) => {
+            let i = 1;
+            result.forEach((item) => {
+              Patient.find({ patientId: item.patientId }).then((data) => {
+                if (result.length > 0) {
+                  modelPatientList.push(data[0]);
+                  if (i === result.length) {
+                    modelPatientList = getUnique(modelPatientList);
+
+                    resolve();
+                  }
+                  i++;
+                } else {
+                  console.log("not there");
+                }
+              });
+            });
+          });
+        }
+
+        const getUnique = (array) =>
+          array.reduce(
+            (acc, x) =>
+              acc.concat(
+                acc.find((y) => y.patientId === x.patientId) ? [] : [x]
+              ),
+            []
+          );
+
+        function secondCallBack() {
+          return new Promise((resolve) => {
+            let i = 1;
+            let j = 1;
+            visits.forEach((item) => {
+              modelPatientList.forEach((pat) => {
+                if (pat.patientId === item.patientId) {
+                  visitList = [...visitList, item.visit[0]];
+                  const {
+                    patientAddedDate,
+                    patientAge,
+                    patientDob,
+                    patientFirstName,
+                    patientFullName,
+                    patientGender,
+                    patientHouseno,
+                    patientId,
+                    patientLastName,
+                    patientMiddleName,
+                    patientMunicipality,
+                    patientPhone,
+                    patientSpouseFullName,
+                    patientVillagename,
+                    patientspousefirstname,
+                    patientspouselastname,
+                    patientwardno,
+                  } = pat;
+                  let newModel = [
+                    {
+                      modelVisitList: visitList,
+                      patientAddedDate,
+                      patientAge,
+                      patientDob,
+                      patientFirstName,
+                      patientFullName,
+                      patientGender,
+                      patientHouseno,
+                      patientId,
+                      patientLastName,
+                      patientMiddleName,
+                      patientMunicipality,
+                      patientPhone,
+                      patientSpouseFullName,
+                      patientVillagename,
+                      patientspousefirstname,
+                      patientspouselastname,
+                      patientwardno,
+                    },
+                  ];
+                  modelPatientList = newModel;
+                }
+              });
+
+              if (i === visits.length) {
+                resolve();
+              }
+              i++;
+            });
+          });
+        }
+
+        async function callback_Original() {
+          try {
+            await firstCallback();
+            await secondCallBack();
+
+            res.status(200).json({ appUserId: user_id, modelPatientList });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+
+        callback_Original();
       })
       .catch((err) => {
         console.log(err);
+        res.status(200).json({
+          appUserId: user_id,
+          message: "you are on sync",
+          details: {},
+        });
       });
-  }
+  });
 });
 
 module.exports = RouterGet;
